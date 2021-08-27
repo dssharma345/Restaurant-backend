@@ -35,3 +35,18 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts, function(jwt_payload, d
 }));
 
 exports.verifyUser = passport.authenticate('jwt', {session: false});
+exports.verifyAdmin = function(req, res, next){
+    if (req.body.admin){
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json({success: true, status: 'Admin Access Verify!'});
+        next();
+    }
+    else{
+        var err = new Error('Unauthorized! Not the admin!');
+        err.status = 403;
+        return next(err);
+    }
+}
+
+
